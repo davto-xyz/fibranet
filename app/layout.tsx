@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#2563eb",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -48,11 +48,12 @@ export default function RootLayout({
     <html lang="es">
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#ffffff" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="FiberTech" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-TileColor" content="#2563eb" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
         <meta name="msapplication-tap-highlight" content="no" />
       </head>
       <body className={inter.className}>{children}</body>
