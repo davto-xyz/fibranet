@@ -7,9 +7,10 @@ import type { Task } from "@/types"
 
 interface TaskMapProps {
   tasks: Task[]
+  onBack?: () => void
 }
 
-export default function TaskMap({ tasks }: TaskMapProps) {
+export default function TaskMap({ tasks, onBack }: TaskMapProps) {
   const nextTask = tasks.find((task) => task.status === "pending") || tasks[0]
 
   return (
@@ -21,7 +22,7 @@ export default function TaskMap({ tasks }: TaskMapProps) {
           <Card className="shadow-lg">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
-                <Button variant="ghost" size="sm" className="p-0" onClick={() => window.history.back()}>
+                <Button variant="ghost" size="sm" className="p-0" onClick={onBack}>
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
                 <h1 className="text-lg font-semibold">Puntos de instalación</h1>

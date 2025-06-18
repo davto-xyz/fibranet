@@ -237,7 +237,7 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
 
         {/* Pantalla de Mapa */}
         <TabsContent value="map" className="m-0">
-          <TaskMap tasks={todayTasks} />
+          <TaskMap tasks={todayTasks} onBack={() => setActiveTab("home")} />
         </TabsContent>
 
         {/* Pantalla de Historial */}

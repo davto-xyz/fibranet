@@ -24,6 +24,7 @@ export default function CapatazDashboard({ user, onLogout }: CapatazDashboardPro
   const [statusFilter, setStatusFilter] = useState("all")
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [showTaskDetail, setShowTaskDetail] = useState(false)
+  const [activeTab, setActiveTab] = useState("tasks")
 
   useEffect(() => {
     // Load all tasks
@@ -194,7 +195,7 @@ export default function CapatazDashboard({ user, onLogout }: CapatazDashboardPro
             </Card>
           </div>
 
-          <Tabs defaultValue="tasks">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="tasks">Gestión de Tareas</TabsTrigger>
               <TabsTrigger value="map">Mapa General</TabsTrigger>
@@ -267,7 +268,7 @@ export default function CapatazDashboard({ user, onLogout }: CapatazDashboardPro
             </TabsContent>
 
             <TabsContent value="map">
-              <TaskMap tasks={filteredTasks} />
+              <TaskMap tasks={filteredTasks} onBack={() => setActiveTab("tasks")} />
             </TabsContent>
           </Tabs>
         </div>
