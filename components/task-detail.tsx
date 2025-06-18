@@ -18,10 +18,10 @@ export default function TaskDetail({ task, onClose, onStartTask }: TaskDetailPro
   return (
     <div className="fixed inset-0 bg-gray-50 z-50">
       {/* Header azul exacto */}
-      <div className="bg-blue-600 text-white">
+      <div className="bg-white text-gray-900 border-b border-gray-200">
         <div className="px-4 py-4">
           <div className="flex items-center">
-            <Button variant="ghost" size="sm" onClick={onClose} className="text-white p-0 mr-3 hover:bg-blue-700">
+            <Button variant="ghost" size="sm" onClick={onClose} className="text-gray-600 p-0 mr-3 hover:bg-gray-100">
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <h1 className="text-lg font-medium">Detalles de la tarea</h1>
