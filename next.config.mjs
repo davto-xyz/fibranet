@@ -10,6 +10,10 @@ const nextConfig = {
   },
   images: {
     unoptimized: true
+  },
+  // PWA Configuration
+  experimental: {
+    webpackBuildWorker: true,
   }
 }
 

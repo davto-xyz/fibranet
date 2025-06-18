@@ -5,6 +5,7 @@ import LoginPage from "@/components/login-page"
 import OperarioDashboard from "@/components/operario-dashboard"
 import CapatazDashboard from "@/components/capataz-dashboard"
 import type { User } from "@/types"
+import PWAInstall from "@/components/pwa-install"
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null)
@@ -43,11 +44,14 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {user.role === "operario" ? (
+      {user?.role === "operario" ? (
         <OperarioDashboard user={user} onLogout={handleLogout} />
-      ) : (
+      ) : user ? (
         <CapatazDashboard user={user} onLogout={handleLogout} />
+      ) : (
+        <LoginPage onLogin={handleLogin} />
       )}
+      <PWAInstall />
     </div>
   )
 }
