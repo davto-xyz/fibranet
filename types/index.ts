@@ -27,8 +27,8 @@ export interface Task {
   startTime: string | null
   endTime: string | null
   incidents: Incident[]
-  priority?: "high" | "medium" | "low"
-  estimatedDuration?: string
   customerName?: string
   customerPhone?: string
+  estimatedTime?: string
+  priority?: "high" | "medium" | "low"
 }

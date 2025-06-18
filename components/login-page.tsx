@@ -4,8 +4,7 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Wifi } from "lucide-react"
+import { Wifi, Mail, Lock } from "lucide-react"
 import type { User } from "@/types"
 
 interface LoginPageProps {
@@ -20,7 +19,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
   const mockUsers = {
     "operario@fibertech.com": {
       id: "1",
-      name: "Juan Pérez",
+      name: "Carlos",
       email: "operario@fibertech.com",
       role: "operario" as const,
     },
@@ -41,73 +40,88 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
       if (user && password === "123456") {
         onLogin(user)
       } else {
-        alert("Credenciales incorrectas. Use:\noperario@fibertech.com / 123456\ncapataz@fibertech.com / 123456")
+        alert("Credenciales incorrectas")
       }
       setLoading(false)
     }, 1000)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <div className="flex-1 flex flex-col justify-center px-6 py-12">
-        <div className="mx-auto w-full max-w-sm">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-4">
-              <Wifi className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">FiberTech</h1>
-            <p className="text-gray-600 text-sm mt-1">Gestión de instalaciones</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-gray-100 flex flex-col justify-center px-8">
+      <div className="mx-auto w-full max-w-sm">
+        {/* Logo exacto del diseño */}
+        <div className="text-center mb-12">
+          <div className="mx-auto w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
+            <Wifi className="w-7 h-7 text-white" />
           </div>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">FibraTech</h1>
+          <p className="text-gray-500 text-sm">Plataforma para técnicos de instalación</p>
+        </div>
 
-          {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </Label>
+        {/* Formulario exacto */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Campo de correo electrónico */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Mail className="h-4 w-4 text-gray-400" />
+              </div>
               <Input
-                id="email"
                 type="email"
-                placeholder="tu@email.com"
+                placeholder="correo@ejemplo.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg text-base bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
+          </div>
 
-            <div>
-              <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Contraseña
-              </Label>
+          {/* Campo de contraseña */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Lock className="h-4 w-4 text-gray-400" />
+              </div>
               <Input
-                id="password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg text-base bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
-
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium"
-            >
-              {loading ? "Iniciando sesión..." : "Iniciar sesión"}
-            </Button>
-          </form>
-
-          {/* Demo credentials */}
-          <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-            <p className="text-xs text-blue-800 font-medium mb-2">Usuarios de prueba:</p>
-            <p className="text-xs text-blue-700">Operario: operario@fibertech.com / 123456</p>
-            <p className="text-xs text-blue-700">Capataz: capataz@fibertech.com / 123456</p>
           </div>
+
+          {/* Botón de iniciar sesión */}
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white text-base font-medium rounded-lg"
+          >
+            {loading ? "Iniciando sesión..." : "Iniciar sesión"}
+          </Button>
+
+          {/* Enlace de contraseña olvidada */}
+          <div className="text-center">
+            <button
+              type="button"
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              onClick={() => alert("Funcionalidad no implementada")}
+            >
+              ¿Olvidaste tu contraseña?
+            </button>
+          </div>
+        </form>
+
+        {/* Credenciales de prueba (solo para desarrollo) */}
+        <div className="mt-8 p-4 bg-white bg-opacity-70 backdrop-blur-sm rounded-lg border border-white border-opacity-50">
+          <p className="text-xs text-blue-800 font-medium mb-2">Usuarios de prueba:</p>
+          <p className="text-xs text-blue-700">operario@fibertech.com / 123456</p>
+          <p className="text-xs text-blue-700">capataz@fibertech.com / 123456</p>
         </div>
       </div>
     </div>

@@ -1,14 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { X, Camera, Upload } from "lucide-react"
+import { ArrowLeft, Camera, Send } from "lucide-react"
 import type { Task, Incident } from "@/types"
 
 interface IncidentFormProps {
@@ -36,10 +33,6 @@ export default function IncidentForm({ task, onClose, onSave }: IncidentFormProp
     }
   }
 
-  const removeImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index))
-  }
-
   const handleSave = () => {
     if (description.trim()) {
       const newIncident: Incident = {
@@ -61,117 +54,92 @@ export default function IncidentForm({ task, onClose, onSave }: IncidentFormProp
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <CardHeader>
-          <div className="flex justify-between items-start">
-            <div>
-              <CardTitle>Reporte de Incidencias</CardTitle>
-              <CardDescription>{task.title}</CardDescription>
-            </div>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="w-4 h-4" />
+    <div className="fixed inset-0 bg-white z-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="px-4 py-4">
+          <div className="flex items-center">
+            <Button variant="ghost" size="sm" onClick={onClose} className="p-0 mr-3">
+              <ArrowLeft className="w-5 h-5" />
             </Button>
+            <h1 className="text-lg font-semibold">Reporte de incidencia</h1>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        </div>
+      </div>
+
+      {/* Contenido */}
+      <div className="flex-1 px-4 py-6">
+        {/* Información de la tarea */}
+        <div className="mb-6">
+          <h2 className="font-semibold text-gray-900 mb-2">{task.title}</h2>
+          <p className="text-sm text-gray-600">{task.address}</p>
+        </div>
+
+        {/* Formulario */}
+        <div className="space-y-6">
           <div>
-            <Label htmlFor="description">Descripción de la incidencia</Label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Describe la incidencia</label>
             <Textarea
-              id="description"
               placeholder="Describe cualquier problema o observación durante la instalación..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
+              className="w-full"
             />
           </div>
 
           <div>
-            <Label htmlFor="images">Imágenes (opcional)</Label>
-            <div className="mt-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Adjuntar fotos (opcional)</label>
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
               <Input
-                id="images"
                 type="file"
                 accept="image/*"
                 multiple
                 onChange={handleImageUpload}
                 className="hidden"
+                id="image-upload"
               />
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => document.getElementById("images")?.click()}
-                className="w-full"
+                onClick={() => document.getElementById("image-upload")?.click()}
+                className="mb-2"
               >
                 <Camera className="w-4 h-4 mr-2" />
-                Subir Imágenes
+                Subir fotos
               </Button>
+              <p className="text-xs text-gray-500">Puedes subir múltiples imágenes</p>
             </div>
           </div>
 
+          {/* Imágenes seleccionadas */}
           {images.length > 0 && (
-            <div className="space-y-2">
-              <Label>Imágenes seleccionadas:</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {images.map((image, index) => (
-                  <div key={index} className="relative">
-                    <img
-                      src={image || "/placeholder.svg"}
-                      alt={`Incidencia ${index + 1}`}
-                      className="w-full h-20 object-cover rounded border"
-                    />
-                    <Button
-                      variant="destructive"
-                      size="icon"
-                      className="absolute -top-2 -right-2 w-6 h-6"
-                      onClick={() => removeImage(index)}
-                    >
-                      <X className="w-3 h-3" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Show existing incidents */}
-          {task.incidents.length > 0 && (
-            <div className="space-y-2">
-              <Label>Incidencias anteriores:</Label>
-              {task.incidents.map((incident) => (
-                <div key={incident.id} className="p-3 bg-gray-50 rounded border">
-                  <p className="text-sm">{incident.description}</p>
-                  <p className="text-xs text-gray-500 mt-1">{new Date(incident.timestamp).toLocaleString("es-ES")}</p>
-                  {incident.images.length > 0 && (
-                    <div className="grid grid-cols-3 gap-1 mt-2">
-                      {incident.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image || "/placeholder.svg"}
-                          alt={`Incidencia ${index + 1}`}
-                          className="w-full h-12 object-cover rounded"
-                        />
-                      ))}
-                    </div>
-                  )}
+            <div className="grid grid-cols-2 gap-3">
+              {images.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={image || "/placeholder.svg"}
+                    alt={`Imagen ${index + 1}`}
+                    className="w-full h-24 object-cover rounded-lg border"
+                  />
                 </div>
               ))}
             </div>
           )}
+        </div>
+      </div>
 
-          <div className="flex gap-2 pt-4">
-            <Button variant="outline" onClick={onClose} className="flex-1">
-              {description.trim() ? "Cancelar" : "Cerrar"}
-            </Button>
-            {description.trim() && (
-              <Button onClick={handleSave} className="flex-1">
-                <Upload className="w-4 h-4 mr-2" />
-                Guardar
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Botón de envío fijo */}
+      <div className="bg-white border-t border-gray-200 p-4">
+        <Button
+          onClick={handleSave}
+          className="w-full h-12 bg-green-600 hover:bg-green-700"
+          disabled={!description.trim()}
+        >
+          <Send className="w-4 h-4 mr-2" />
+          Enviar reporte
+        </Button>
+      </div>
     </div>
   )
 }
