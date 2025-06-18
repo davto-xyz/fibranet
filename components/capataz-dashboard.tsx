@@ -135,139 +135,145 @@ export default function CapatazDashboard({ user, onLogout }: CapatazDashboardPro
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div>
-              <h1 className="text-xl font-semibold text-gray-900">Panel de Control - {user.name}</h1>
-              <p className="text-sm text-gray-500">Capataz • {new Date().toLocaleDateString("es-ES")}</p>
+      {/* Contenedor centrado para desktop */}
+      <div className="max-w-md mx-auto bg-white min-h-screen shadow-lg">
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="px-4 py-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-xl font-semibold text-gray-900">Panel - {user.name}</h1>
+                <p className="text-sm text-gray-500">Capataz • {new Date().toLocaleDateString("es-ES")}</p>
+              </div>
+              <Button variant="outline" onClick={onLogout} size="sm">
+                <LogOut className="w-4 h-4 mr-2" />
+                Salir
+              </Button>
             </div>
-            <Button variant="outline" onClick={onLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Salir
-            </Button>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Tareas</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">En Curso</CardTitle>
-              <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.inProgress}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Completadas</CardTitle>
-              <CheckCircle className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
-            </CardContent>
-          </Card>
+        <div className="px-4 py-6">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Tareas</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{stats.total}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Pendientes</CardTitle>
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">En Curso</CardTitle>
+                <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-blue-600">{stats.inProgress}</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Completadas</CardTitle>
+                <CheckCircle className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Tabs defaultValue="tasks">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="tasks">Gestión de Tareas</TabsTrigger>
+              <TabsTrigger value="map">Mapa General</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="tasks" className="space-y-4">
+              {/* Filters */}
+              <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-lg shadow-sm">
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+                  <Input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos los estados</SelectItem>
+                      <SelectItem value="pending">Pendiente</SelectItem>
+                      <SelectItem value="in-progress">En curso</SelectItem>
+                      <SelectItem value="completed">Completada</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Tasks List */}
+              <div className="grid gap-4">
+                {filteredTasks.map((task) => (
+                  <Card key={task.id}>
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <CardTitle className="text-lg">{task.title}</CardTitle>
+                          <CardDescription>{task.address}</CardDescription>
+                          <p className="text-sm text-gray-600 mt-1">
+                            Asignado a: {task.assignedToName || "Sin asignar"}
+                          </p>
+                        </div>
+                        <Badge className={getStatusColor(task.status)}>{getStatusText(task.status)}</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-gray-500">
+                          {task.startTime && <p>Inicio: {new Date(task.startTime).toLocaleTimeString("es-ES")}</p>}
+                          {task.endTime && <p>Fin: {new Date(task.endTime).toLocaleTimeString("es-ES")}</p>}
+                          {task.incidents.length > 0 && (
+                            <p className="text-orange-600">{task.incidents.length} incidencia(s) reportada(s)</p>
+                          )}
+                        </div>
+                        <Button
+                          onClick={() => {
+                            setSelectedTask(task)
+                            setShowTaskDetail(true)
+                          }}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          Ver Detalles
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="map">
+              <TaskMap tasks={filteredTasks} />
+            </TabsContent>
+          </Tabs>
         </div>
-
-        <Tabs defaultValue="tasks">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="tasks">Gestión de Tareas</TabsTrigger>
-            <TabsTrigger value="map">Mapa General</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="tasks" className="space-y-4">
-            {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-lg shadow-sm">
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
-                <Input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
-              </div>
-              <div className="flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos los estados</SelectItem>
-                    <SelectItem value="pending">Pendiente</SelectItem>
-                    <SelectItem value="in-progress">En curso</SelectItem>
-                    <SelectItem value="completed">Completada</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Tasks List */}
-            <div className="grid gap-4">
-              {filteredTasks.map((task) => (
-                <Card key={task.id}>
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{task.title}</CardTitle>
-                        <CardDescription>{task.address}</CardDescription>
-                        <p className="text-sm text-gray-600 mt-1">Asignado a: {task.assignedToName || "Sin asignar"}</p>
-                      </div>
-                      <Badge className={getStatusColor(task.status)}>{getStatusText(task.status)}</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-center">
-                      <div className="text-sm text-gray-500">
-                        {task.startTime && <p>Inicio: {new Date(task.startTime).toLocaleTimeString("es-ES")}</p>}
-                        {task.endTime && <p>Fin: {new Date(task.endTime).toLocaleTimeString("es-ES")}</p>}
-                        {task.incidents.length > 0 && (
-                          <p className="text-orange-600">{task.incidents.length} incidencia(s) reportada(s)</p>
-                        )}
-                      </div>
-                      <Button
-                        onClick={() => {
-                          setSelectedTask(task)
-                          setShowTaskDetail(true)
-                        }}
-                        size="sm"
-                        variant="outline"
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        Ver Detalles
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="map">
-            <TaskMap tasks={filteredTasks} />
-          </TabsContent>
-        </Tabs>
       </div>
 
+      {/* Modales mantienen su comportamiento actual */}
       {showTaskDetail && selectedTask && (
         <TaskDetailModal
           task={selectedTask}

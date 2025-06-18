@@ -44,14 +44,17 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {user?.role === "operario" ? (
-        <OperarioDashboard user={user} onLogout={handleLogout} />
-      ) : user ? (
-        <CapatazDashboard user={user} onLogout={handleLogout} />
-      ) : (
-        <LoginPage onLogin={handleLogin} />
-      )}
-      <PWAInstall />
+      {/* Contenedor centrado para desktop */}
+      <div className="max-w-md mx-auto bg-white min-h-screen shadow-lg">
+        {user?.role === "operario" ? (
+          <OperarioDashboard user={user} onLogout={handleLogout} />
+        ) : user ? (
+          <CapatazDashboard user={user} onLogout={handleLogout} />
+        ) : (
+          <LoginPage onLogin={handleLogin} />
+        )}
+        <PWAInstall />
+      </div>
     </div>
   )
 }
