@@ -75,12 +75,22 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
       },
     ]
 
-    const savedTasks = localStorage.getItem("fibertech-tasks")
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks))
+    if (typeof window !== "undefined" && window.localStorage) {
+      try {
+        const savedTasks = localStorage.getItem("fibertech-tasks")
+        if (savedTasks) {
+          setTasks(JSON.parse(savedTasks))
+        } else {
+          setTasks([...mockTasks])
+          localStorage.setItem("fibertech-tasks", JSON.stringify(mockTasks))
+        }
+      } catch (error) {
+        console.error("Error leyendo tareas desde localStorage:", error)
+        setTasks([...mockTasks])
+        localStorage.setItem("fibertech-tasks", JSON.stringify(mockTasks))
+      }
     } else {
-      setTasks(mockTasks)
-      localStorage.setItem("fibertech-tasks", JSON.stringify(mockTasks))
+      setTasks([...mockTasks])
     }
   }, [user.id])
 
@@ -113,10 +123,12 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
   )
 
   const getTaskTime = (task: Task) => {
-    if (task.status === "in-progress") return "9:00 AM"
-    if (task.id === "2") return "11:30 AM"
-    if (task.id === "3") return "2:00 PM"
-    return "9:00 AM"
+    const startTimes: { [key: string]: string } = {
+      "1": "9:00 AM",
+      "2": "11:30 AM",
+      "3": "2:00 PM",
+    }
+    return startTimes[task.id] || "9:00 AM"
   }
 
   return (
@@ -219,11 +231,11 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
                             setShowTaskDetail(true)
                           }}
                         >
-                          <Info className="w-4 h-4 mr-1" />
+                          <Info className="w-4 h-4 mr-1" aria-label="Ver detalles de la tarea" />
                           Detalles
                         </Button>
                         <Button variant="ghost" size="sm" className="text-blue-600 p-0 h-auto font-medium">
-                          <Navigation className="w-4 h-4 mr-1" />
+                          <Navigation className="w-4 h-4 mr-1" aria-label="Navegar a la ubicación de la tarea" />
                           Navegar
                         </Button>
                       </div>
