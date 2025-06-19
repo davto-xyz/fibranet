@@ -32,9 +32,9 @@ export default function TaskDetail({ task, onClose, onStartTask, onCompleteTask 
   }
 
   return (
-    <div className="fixed inset-0 bg-gray-100 z-50 overflow-y-auto">
+    <div className="fixed inset-0 bg-gray-100 z-50">
       {/* Contenedor centrado para desktop */}
-      <div className="max-w-md mx-auto bg-white min-h-screen shadow-lg">
+      <div className="max-w-md mx-auto bg-white min-h-screen shadow-lg overflow-y-auto">
         {/* Header azul */}
         <div className="bg-blue-600 text-white">
           <div className="px-4 py-6">
