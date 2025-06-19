@@ -22,8 +22,14 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [showIncidentForm, setShowIncidentForm] = useState(false)
   const [showTaskDetail, setShowTaskDetail] = useState(false)
+  const [taskView, setTaskView] = useState<"today" | "future">("today")
 
   useEffect(() => {
+    const todayDate = new Date().toISOString().split("T")[0]
+    const tomorrowDate = new Date(Date.now() + 1 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+    const inThreeDays = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+    const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+    const nextWeekPlusTwo = new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
     const mockTasks: Task[] = [
       {
         id: "1",
@@ -31,7 +37,7 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
         address: "Calle Roble 45, Edificio Aurora, Apto 302",
         status: "in-progress",
         assignedTo: user.id,
-        scheduledDate: new Date().toISOString().split("T")[0],
+        scheduledDate: todayDate,
         coordinates: { lat: 40.4168, lng: -3.7038 },
         startTime: new Date().toISOString(),
         endTime: null,
@@ -47,7 +53,7 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
         address: "Av. Comercio 78, Local 12, Centro Empresarial",
         status: "pending",
         assignedTo: user.id,
-        scheduledDate: new Date().toISOString().split("T")[0],
+        scheduledDate: todayDate,
         coordinates: { lat: 40.42, lng: -3.71 },
         startTime: null,
         endTime: null,
@@ -63,7 +69,7 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
         address: "Calle Pino 12, Casa 4, Urbanización Los Pinos",
         status: "pending",
         assignedTo: user.id,
-        scheduledDate: new Date().toISOString().split("T")[0],
+        scheduledDate: todayDate,
         coordinates: { lat: 40.424, lng: -3.712 },
         startTime: null,
         endTime: null,
@@ -73,7 +79,105 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
         estimatedTime: "45m",
         priority: "low",
       },
+      {
+        id: "4",
+        title: "Supervisión de empalmes",
+        address: "Calle Mayor 100, Madrid",
+        status: "pending",
+        assignedTo: user.id,
+        scheduledDate: todayDate,
+        coordinates: { lat: 40.417, lng: -3.704 },
+        startTime: null,
+        endTime: null,
+        incidents: [],
+        customerName: "Pedro Sánchez",
+        customerPhone: "+34 666 111 222",
+        estimatedTime: "1h",
+        priority: "medium",
+      },
+      {
+        id: "5",
+        title: "Avería en instalación",
+        address: "Av. de América 25, Madrid",
+        status: "in-progress",
+        assignedTo: user.id,
+        scheduledDate: todayDate,
+        coordinates: { lat: 40.439, lng: -3.678 },
+        startTime: new Date().toISOString(),
+        endTime: null,
+        incidents: [],
+        customerName: "Beatriz Ruiz",
+        customerPhone: "+34 666 987 654",
+        estimatedTime: "1h 15m",
+        priority: "high",
+      },
+      {
+        id: "6",
+        title: "Revisión de señal",
+        address: "Calle Luna 9, Madrid",
+        status: "pending",
+        assignedTo: user.id,
+        scheduledDate: tomorrowDate,
+        coordinates: { lat: 40.418, lng: -3.701 },
+        startTime: null,
+        endTime: null,
+        incidents: [],
+        customerName: "Ana López",
+        customerPhone: "+34 666 555 111",
+        estimatedTime: "1h",
+        priority: "medium",
+      },
+      {
+        id: "7",
+        title: "Comprobación de red",
+        address: "Calle Sol 5, Madrid",
+        status: "pending",
+        assignedTo: user.id,
+        scheduledDate: inThreeDays,
+        coordinates: { lat: 40.419, lng: -3.699 },
+        startTime: null,
+        endTime: null,
+        incidents: [],
+        customerName: "Javier Martín",
+        customerPhone: "+34 666 222 333",
+        estimatedTime: "1h 30m",
+        priority: "low",
+      },
+      {
+        id: "8",
+        title: "Instalación avanzada",
+        address: "Calle Serrano 20, Madrid",
+        status: "pending",
+        assignedTo: user.id,
+        scheduledDate: nextWeek,
+        coordinates: { lat: 40.421, lng: -3.688 },
+        startTime: null,
+        endTime: null,
+        incidents: [],
+        customerName: "Empresa XYZ",
+        customerPhone: "+34 666 000 999",
+        estimatedTime: "2h",
+        priority: "high",
+      },
+      {
+        id: "9",
+        title: "Supervisión general",
+        address: "Av. Reina Victoria 8, Madrid",
+        status: "pending",
+        assignedTo: user.id,
+        scheduledDate: nextWeekPlusTwo,
+        coordinates: { lat: 40.437, lng: -3.712 },
+        startTime: null,
+        endTime: null,
+        incidents: [],
+        customerName: "Laura Peña",
+        customerPhone: "+34 666 888 777",
+        estimatedTime: "1h",
+        priority: "medium",
+      }
     ]
+
+    console.log("User ID al montar:", user.id)
 
     if (typeof window !== "undefined" && window.localStorage) {
       try {
@@ -118,8 +222,12 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
     updateTask(updatedTask)
   }
 
+  const today = new Date().toISOString().split("T")[0]
   const todayTasks = tasks.filter(
-    (task) => task.assignedTo === user.id && task.scheduledDate === new Date().toISOString().split("T")[0],
+    (task) => task.assignedTo === user.id && task.scheduledDate === today,
+  )
+  const futureTasks = tasks.filter(
+    (task) => task.assignedTo === user.id && task.scheduledDate > today,
   )
 
   const getTaskTime = (task: Task) => {
@@ -130,6 +238,9 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
     }
     return startTimes[task.id] || "9:00 AM"
   }
+
+  console.log("Todas las tareas:", tasks)
+  console.log("Tareas de hoy:", todayTasks)
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
@@ -176,10 +287,25 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
               </Card>
             </div>
 
-            {/* Tareas de hoy */}
+            {/* Tareas de hoy y futuras */}
             <div className="px-4">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-gray-900">Tareas de hoy ({todayTasks.length})</h2>
+                <div className="flex gap-4">
+                  <Button
+                    variant={taskView === "today" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setTaskView("today")}
+                  >
+                    Hoy ({todayTasks.length})
+                  </Button>
+                  <Button
+                    variant={taskView === "future" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setTaskView("future")}
+                  >
+                    Próximas ({futureTasks.length})
+                  </Button>
+                </div>
                 <Button variant="ghost" size="sm" className="text-blue-600" onClick={() => setActiveTab("map")}>
                   <Map className="w-4 h-4 mr-1" />
                   Ver en mapa
@@ -188,7 +314,7 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
 
               {/* Lista de tareas */}
               <div className="space-y-4 pb-20">
-                {todayTasks.map((task) => (
+                {(taskView === "today" ? todayTasks : futureTasks).map((task) => (
                   <Card key={task.id} className="overflow-hidden">
                     <CardContent className="p-4">
                       {/* Estado y hora */}
