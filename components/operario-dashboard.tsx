@@ -132,7 +132,7 @@ export default function OperarioDashboard({ user, onLogout }: OperarioDashboardP
         title: "Comprobación de red",
         address: "Calle Sol 5, Madrid",
         status: "pending",
-        assignedTo: user.id,
+        assignedTo: "1",
         scheduledDate: inThreeDays,
         coordinates: { lat: 40.419, lng: -3.699 },
         startTime: null,
